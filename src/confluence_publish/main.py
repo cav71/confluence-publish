@@ -19,7 +19,7 @@ def parse_args(args=None):
     subparser(subparsers, "hello", hello)
 
     args = parser.parse_args(args)
-    return args.__dict__
+    return args
 
 
 def hello():
@@ -27,8 +27,13 @@ def hello():
     logging.info("B")
     logging.warning("C")
 
+
 def main():
+    args = parse_args()
+    func = args.func
+    delattr(args, "func")
+    func(**args.__dict__)
 
 
 if __name__ == "__main__":
-    main(**parse_args())
+    main()

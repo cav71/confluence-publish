@@ -117,7 +117,6 @@ class LoggingArguments(Argument):
 
     def process(self, options):
         loglevel = sum(options.loglevel or []) - int(self.quiet)
-        print(options, loglevel)
         if loglevel < 0:
             level = logging.WARNING
         elif loglevel == 0:
