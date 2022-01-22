@@ -24,18 +24,17 @@ def test_load_doc(datadir):
     assert (
         txt
         == """
-a simple test doc
-
-This is a simple test doc to use
-  for testing
-
 ---
 title: a title
 author: an author name
-multi: a multiline
-    text with indenration
+multi: >
+  a multiline
+    text with indentation
       on multiple lines
 ---
+
+This is a simple test doc to use
+  for testing
 """.strip()
     )
 
