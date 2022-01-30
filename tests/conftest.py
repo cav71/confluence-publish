@@ -68,7 +68,6 @@ def scripter(request, tmp_path_factory, datadir):
             txt += "" if txt.endswith("\n") else "\n"
             return txt
 
-
     class Script:
         def __repr__(self):
             return (
@@ -171,7 +170,7 @@ def scripter(request, tmp_path_factory, datadir):
 
 
 def pytest_configure(config):
-    config.addinivalue_line("markers", "manual: test intented to run manually")
+    config.addinivalue_line("markers", "manual: test intended to run manually")
 
 
 def pytest_collection_modifyitems(config, items):

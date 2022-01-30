@@ -3,12 +3,11 @@
 Examples:
     publish a page under the main root document
 
-    confluence-publish publish "A root page title" file.py {file.py, ..}
+    confluence-publish "A root page title" file.py {file.py, ..}
 
 """
 
 import logging
-import keyring
 import json
 
 from . import cli
