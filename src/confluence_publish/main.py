@@ -1,6 +1,20 @@
+"""publish doctsring from files into a confluence site
+
+Examples:
+    publish a page under the main root document
+
+    confluence-publish publish "A root page title" file.py {file.py, ..}
+
+"""
+
 import logging
+import keyring
+import json
 
 from . import cli
+
+def pp(obj):
+    return json.dumps(obj, indent=2, sort_keys=True)
 
 
 def subparser(subparsers, name, cmd):
@@ -12,27 +26,27 @@ def subparser(subparsers, name, cmd):
     return p
 
 
-def parse_args(args=None):
-    parser = cli.ArgumentParser()
-    subparsers = parser.add_subparsers(required=True)
-
-    subparser(subparsers, "hello", hello)
-
-    args = parser.parse_args(args)
-    return args
-
-
-def hello():
-    logging.debug("A")
-    logging.info("B")
-    logging.warning("C")
-
-
 def main():
     args = parse_args()
     func = args.func
     delattr(args, "func")
     func(**args.__dict__)
+
+
+def parse_args(args=None):
+    parser = cli.ArgumentParser()
+    subparsers = parser.add_subparsers(required=True)
+
+    subparser(subparsers, "publish", publish)
+
+    args = parser.parse_args(args)
+    return args
+
+
+def publish():
+    logging.debug("A")
+    logging.info("B")
+    logging.warning("C")
 
 
 if __name__ == "__main__":

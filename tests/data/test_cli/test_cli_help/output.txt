@@ -1,0 +1,10 @@
+*=> ERRCODE 0
+*=> STDOUT
+usage: main.py [-h] {hello} ...
+
+positional arguments:
+  {hello}
+
+options:
+  -h, --help  show this help message and exit
+*=> STDERR

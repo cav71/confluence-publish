@@ -80,6 +80,30 @@ class ArgumentParser(argparse.ArgumentParser):
 
 
 class ConfigArgument(Argument):
+    """Adds support for a configuration file
+
+    This adds a new -c|--config argument to fetch default values from a
+    json file.
+
+    Example:
+
+        In the main script
+          p = cli.ArgumentParser()
+          p.add_argument("--foo")
+          p.add_argument(cli.ConfigArgument)
+          print(p.parse_args().foo)
+
+        In a config.json file
+          {
+            "foo" : "bar",
+          }
+
+        Usage
+          blah -c config.json
+          > bar
+          blah -c config.json --foo 1
+          > 1
+    """
     def __init__(self):
         super(ConfigArgument, self).__init__(remove={"config", "config_key"})
 
@@ -96,8 +120,9 @@ class ConfigArgument(Argument):
             confkey = options.config_key.value
 
         if conffile:
+            from json import load
             with open(conffile) as fp:
-                config = json.load(fp)
+                config = load(fp)
             if confkey:
                 config = config[confkey]
             for key, value in config.items():
@@ -107,6 +132,15 @@ class ConfigArgument(Argument):
 
 class LoggingArguments(Argument):
     def __init__(self):
+        """Adds support for -v|-q verbose logging
+
+        Example:
+
+            In the main script
+              p = cli.ArgumentParser()
+              p.add_argument("--foo")
+              p.add_argument(cli.LoggingArguments, quiet=True)
+        """
         super(LoggingArguments, self).__init__({"loglevel"})
         self.quiet = True
 
