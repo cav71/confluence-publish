@@ -36,13 +36,14 @@ def parse_args(args=None):
     parser = cli.ArgumentParser()
     subparsers = parser.add_subparsers(required=True)
 
-    subparser(subparsers, "publish", publish)
+    publishp = subparser(subparsers, "publish", publish)
+    publishp.add_argument("--commit", action="store_true")
 
     args = parser.parse_args(args)
     return args
 
 
-def publish():
+def publish(commit):
     logging.debug("A")
     logging.info("B")
     logging.warning("C")

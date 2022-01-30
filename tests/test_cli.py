@@ -8,3 +8,13 @@ def test_cli_help(scripter):
     script = scripter / "-m confluence_publish.main"
     result = script.run([ "--help" ])
     scripter.compare(result, populate=True)
+
+
+def test_subparsers(scripter):
+    from confluence_publish.main import parse_args
+
+    options = parse_args(["publish"])
+    assert options.commit is None
+
+    options = parse_args(["publish", "--commit"])
+    assert options.commit is True
