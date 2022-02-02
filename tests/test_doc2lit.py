@@ -108,6 +108,7 @@ def test_md2lit(datadir):
 """ == lit.body
 
 
+
 def test_rst2lit(datadir):
     src = datadir / "sample-script-with-rst.py"
     doc2lit.rst2lit(src.read_text())
