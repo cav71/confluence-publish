@@ -10,3 +10,4 @@ pytest-html
 pytest-cov
 pyfakefs
 types-docutils
+markdown2
