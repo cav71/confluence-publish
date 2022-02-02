@@ -74,7 +74,7 @@ def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[Non
     """
     from markdown2 import Markdown
 
-    meta = None
+    meta : Union[None, List[str]] = None
     text : List[str] = []
     status = None
     for line in txt.split("\n"):
@@ -98,10 +98,10 @@ def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[Non
         if parse:
             md = Markdown(extras=['metadata'])
             md.convert("\n".join(["---", *(meta or []), "---"]))
-            metapart = getattr(md, "metadata", "")
+            metapart = getattr(md, "metadata", "")  # type: ignore
         else:
-            metapart = "\n".join(meta or [])
-    return metapart, textpart
+            metapart = "\n".join(meta or [])  # type: ignore
+    return metapart, textpart  # type: ignore
 
 
 def md2lit(txt: str) -> Litterate:
