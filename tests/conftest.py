@@ -143,7 +143,8 @@ def scripter(request, tmp_path_factory, datadir):
             subdir: Optional[Union[Path, str]] = True,
             populate: bool = False,
             overwrite: bool = False,
-            what: str = "both"
+            what: str = "both",
+            is_help: bool = False
         ):
             srcdir = (
                 self.datadir / self.nodename
@@ -164,6 +165,9 @@ def scripter(request, tmp_path_factory, datadir):
             if overwrite and (left != right):
                 target.write_text(result.as_txt(what))
 
+            if is_help:
+                left = left.replace("optional arguments:", "options:")
+                right = right.replace("optional arguments:", "options:")
             assert left == right
 
     return Scripter(Path(request.module.__file__).parent, datadir, request.node.name)

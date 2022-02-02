@@ -7,7 +7,7 @@ DATADIR = __name__
 def test_cli_help(scripter):
     script = scripter / "-m confluence_publish.main"
     result = script.run([ "--help" ])
-    scripter.compare(result, populate=True)
+    scripter.compare(result, populate=True, is_help=True)
 
 
 def test_subparsers(scripter):
