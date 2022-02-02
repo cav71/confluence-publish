@@ -62,7 +62,7 @@ def load_doc(path: Path) -> str:
     return get_doc(path.read_text())
 
 
-def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[str,Dict[Any, Any]], str]:
+def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[None,str,Dict[Any, Any]], str]:
     """extract from str all lines up to endmeta
     
     Args:
@@ -92,11 +92,15 @@ def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[str
             else:
                 meta.append(line)
     textpart = "\n".join(text)
-    metapart = "\n".join(meta or [])
-    if parse:
-        md = Markdown(extras=['metadata'])
-        md.convert("\n".join(["---", *(meta or []), "---"]))
-        metapart = getattr(md, "metadata", None)
+
+    metapart = meta
+    if meta is not None:
+        if parse:
+            md = Markdown(extras=['metadata'])
+            md.convert("\n".join(["---", *(meta or []), "---"]))
+            metapart = getattr(md, "metadata", "")
+        else:
+            metapart = "\n".join(meta or [])
     return metapart, textpart
 
 
