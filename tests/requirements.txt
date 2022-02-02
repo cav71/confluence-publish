@@ -9,3 +9,4 @@ pytest
 pytest-html
 pytest-cov
 pyfakefs
+types-docutils

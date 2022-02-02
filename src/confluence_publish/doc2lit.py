@@ -3,16 +3,10 @@ import logging
 import dataclasses as dc
 from pathlib import Path
 import enum
-from typing import Tuple, Dict, Union, Optional
-
-# import docutils.core
-#
-import markdown2
-# import yaml
+from typing import Tuple, Dict, Union, Optional, Any, List
 
 
 log = logging.getLogger()
-
 
 
 class LitteralException(Exception):
@@ -68,7 +62,7 @@ def load_doc(path: Path) -> str:
     return get_doc(path.read_text())
 
 
-def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[str,Dict[str, str]], str]:
+def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[str,Dict[Any, Any]], str]:
     """extract from str all lines up to endmeta
     
     Args:
@@ -81,7 +75,7 @@ def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[str
     from markdown2 import Markdown
 
     meta = None
-    text = []
+    text : List[str] = []
     status = None
     for line in txt.split("\n"):
         if status is None:
@@ -98,10 +92,10 @@ def popmeta(txt: str, parse:bool = True, tag="== endmeta ==") -> Tuple[Union[str
             else:
                 meta.append(line)
     textpart = "\n".join(text)
-    metapart = "\n".join(meta)
+    metapart = "\n".join(meta or [])
     if parse:
         md = Markdown(extras=['metadata'])
-        md.convert("\n".join(["---", *meta, "---"]))
+        md.convert("\n".join(["---", *(meta or []), "---"]))
         metapart = getattr(md, "metadata", None)
     return metapart, textpart
 
@@ -112,14 +106,15 @@ def md2lit(txt: str) -> Litterate:
     md = Markdown(extras=['metadata'])
 
     lit = Litterate()
-    lit.meta, lit.raw = popmeta(txt, parse=True)
+    lit.meta, lit.raw = popmeta(txt, parse=True)  # type: ignore
     lit.body = md.convert(lit.raw)
     lit.kind = LitterateType.MD
     return lit
 
 
 def rst2lit(txt: str) -> Litterate:
-    """process txt (rst) into a data and html"""
+    """process txt (rst) into a data and html
+    """
     from docutils.core import publish_parts, publish_doctree
     root = publish_doctree(source=txt)
 
